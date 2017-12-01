@@ -5,6 +5,7 @@
 import json
 import sys
 import os
+import datetime
 from urllib.request import urlopen
 from decimal import *
 
@@ -225,12 +226,20 @@ def queryAllAddressBalances():
     
 def getWalletBalances():
     try:
+        query = "https://api.coinmarketcap.com/v1/ticker/ethereum/"
+        request = urlopen(query)
+        response = request.read()
+        jsonObj = json.loads(response.decode('utf-8'))
+        request.close()
+        value = float(jsonObj[0]['price_usd'])
+    
         with open('wallet_addresses.json', 'r') as wallet:
             addresses = json.load(wallet)
         for label, address in addresses.items():
-            balance = querySingleAddressBalance(address)
+            balance = float(querySingleAddressBalance(address))
             print("  " + address + bcolors.FAIL + " :: " + bcolors.OKGREEN + label + bcolors.FAIL + " :: " \
-                    + bcolors.ENDC + str(balance) + bcolors.OKGREEN + " ETH" + bcolors.ENDC)
+                    + bcolors.ENDC + str(balance) + bcolors.OKGREEN + " ETH" + bcolors.FAIL + " :: " \
+                    + bcolors.WARNING + "$" + str(round(value * balance, 2)) + bcolors.ENDC)
     except:
         print(sys.exc_info())
     return
@@ -266,6 +275,32 @@ def getTokenBalance():
         else:
             print(bcolors.WARNING + "\nInvalid selection." + bcolors.ENDC)
             return
+    except:
+        print(sys.exc_info())
+    return
+
+def snapshot():
+    try:
+        query = "https://api.coinmarketcap.com/v1/ticker/ethereum/"
+        request = urlopen(query)
+        response = request.read()
+        jsonObj = json.loads(response.decode('utf-8'))
+        request.close()
+        value = float(jsonObj[0]['price_usd'])
+        
+        filename = datetime.datetime.now().strftime("%m-%d-%Y %I-%M-%S%p") + ".txt"
+        if not os.path.isdir("snapshots"):
+            os.mkdir("snapshots")
+            
+        snapshot = open("snapshots/" + filename, "w")
+        snapshot.write("Balance snapshot for " + datetime.datetime.now().strftime("%m-%d-%Y %I:%M:%S%p") + "\n\n")
+        with open('wallet_addresses.json', 'r') as wallet:
+            addresses = json.load(wallet)
+        for label, address in addresses.items():
+            balance = float(querySingleAddressBalance(address))
+            snapshot.write(address + " :: " + label + " :: " + str(balance) + " ETH" + " :: $" + str(round(value * balance, 2)) + "\n")
+        snapshot.close()
+        print(bcolors.OKGREEN + "Done." + bcolors.ENDC)
     except:
         print(sys.exc_info())
     return

@@ -19,10 +19,13 @@ def main():
             clearScreen()
             print(bcolors.HEADER + "\nBalances:\n" + bcolors.ENDC)
             getWalletBalances()
-            response = input("\n" + bcolors.WARNING + "1 - Check token balance" + bcolors.ENDC + "\n\n: ")
+            response = input("\n" + bcolors.WARNING + "1 - Check token balance\t\t2 - Create snapshot" + bcolors.ENDC + "\n\n: ")
             
             if response.lower() == "1":
                 getTokenBalance()
+            elif response.lower() == "2":
+                print(bcolors.WARNING + "Saving..." + bcolors.ENDC)
+                snapshot()
             else:
                 clearScreen()
                 printMenu()
