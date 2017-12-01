@@ -19,13 +19,21 @@ def main():
             clearScreen()
             print(bcolors.HEADER + "\nBalances:\n" + bcolors.ENDC)
             getWalletBalances()
-            response = input("\n" + bcolors.WARNING + "1 - Check token balance\t\t2 - Create snapshot" + bcolors.ENDC + "\n\n: ")
+            try:
+                response = input("\n" + bcolors.WARNING + "1 - Check token balance\t\t2 - Create snapshot\t\t" + \
+                                bcolors.OKGREEN + "Enter" + bcolors.WARNING + " - Return to menu" + bcolors.ENDC + "\n\n: ")
+            except KeyboardInterrupt:
+                print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+                exit()
             
             if response.lower() == "1":
                 getTokenBalance()
             elif response.lower() == "2":
                 print(bcolors.WARNING + "Saving..." + bcolors.ENDC)
                 snapshot()
+            elif command.lower()== "exit" or command.lower() == "close":
+                print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+                exit()
             else:
                 clearScreen()
                 printMenu()
@@ -34,12 +42,20 @@ def main():
             clearScreen()
             print(bcolors.HEADER + "\nStored addresses:\n" + bcolors.ENDC)
             getWalletAddresses()
-            response = input("\n" + bcolors.WARNING + "1 - Add address\t\t2 - Remove address" + bcolors.ENDC + "\n\n: ")
+            try:
+                response = input("\n" + bcolors.WARNING + "1 - Add address\t\t2 - Remove address\t\t" + \
+                                bcolors.OKGREEN + "Enter" + bcolors.WARNING + " - Return to menu" + bcolors.ENDC + "\n\n: ")
+            except KeyboardInterrupt:
+                print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+                exit()
             
             if response.lower() == "1":
                 addNewWalletAddress() 
             elif response.lower() == "2":
                 removeWalletAddress()
+            elif command.lower()== "exit" or command.lower() == "close":
+                print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+                exit()
             else:
                 clearScreen()
                 printMenu()
@@ -47,21 +63,28 @@ def main():
         elif command.lower() == "3":
             clearScreen()
             displayKnownTokens()
-            response = input("\n" + bcolors.WARNING + "1 - Add contract\t2 - Remove contract" + bcolors.ENDC + "\n\n: ")
+            try:
+                response = input("\n" + bcolors.WARNING + "1 - Add contract\t\t2 - Remove contract\t\t" + \
+                                bcolors.OKGREEN + "Enter" + bcolors.WARNING + " - Return to menu" + bcolors.ENDC + "\n\n: ")
+            except KeyboardInterrupt:
+                print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+                exit()
             
             if response.lower() == "1":
                 addTokenContract() 
             elif response.lower() == "2":
                 removeTokenContract()
+            elif command.lower()== "exit" or command.lower() == "close":
+                print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+                exit()
             else:
                 clearScreen()
                 printMenu()
         
         elif command.lower() == "4":
             clearScreen()
-            print(bcolors.HEADER + "\nAPI-Key info:\n" + bcolors.ENDC)
             changeApiKey()
-        
+            
         elif command.lower()== "exit" or command.lower() == "close":
             print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
             exit()

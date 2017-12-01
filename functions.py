@@ -124,6 +124,9 @@ def addTokenContract():
             print(bcolors.FAIL + "Incorrect address value.\nAction cancelled." + bcolors.ENDC)
             return
         return
+    except KeyboardInterrupt:
+        print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+        exit()
     except:
         print(sys.exc_info())
     return
@@ -149,6 +152,9 @@ def removeTokenContract():
                     return
         print(bcolors.WARNING + "\nContract not found.\nLeaving token database unchanged." + bcolors.ENDC)
         return
+    except KeyboardInterrupt:
+        print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+        exit()
     except:
         print(sys.exc_info())
     return
@@ -275,6 +281,9 @@ def getTokenBalance():
         else:
             print(bcolors.WARNING + "\nInvalid selection." + bcolors.ENDC)
             return
+    except KeyboardInterrupt:
+        print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+        exit()
     except:
         print(sys.exc_info())
     return
@@ -342,6 +351,9 @@ def addNewWalletAddress():
         else:
             print(bcolors.FAIL + "Incorrect address value.\nAction cancelled." + bcolors.ENDC)
         return
+    except KeyboardInterrupt:
+        print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+        exit()
     except:
         print(sys.exc_info())
     return
@@ -375,26 +387,28 @@ def removeWalletAddress():
                 else:
                     notDone = True
         return
+    except KeyboardInterrupt:
+        print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+        exit()
     except:
         print(sys.exc_info())
     return
     
 def changeApiKey():
     try:
-        with open('app_info.json', 'r') as settings:
-            info = json.load(settings)
-        key = info['API_KEY']
+        print(bcolors.HEADER + "\nAPI-Key info:\n" + bcolors.ENDC)
+        key = json.load(open('app_info.json', 'r'))['API_KEY']
         print("  Current API key: \'" + bcolors.OKGREEN + key + bcolors.ENDC + "\'")
         print("\n  Visit https://etherscan.io/myapikey to generate a new one.\n")
-        change = input(bcolors.WARNING + "1 - Change API key" + bcolors.ENDC + "\n\n: ")
-        if change.lower() == '1':
+        command = input(bcolors.WARNING + "1 - Change API key\t\t" + bcolors.OKGREEN + \
+                        "Enter" + bcolors.WARNING + " - Return to menu" + bcolors.ENDC + "\n\n: ")
+        if command.lower() == '1':
             newKey = input("\nEnter new API key\n\n: ")
             print("\nNew API key: \'" + bcolors.WARNING + newKey + bcolors.ENDC + "\'")
             check = input("Is this correct? [Y/N]\n\n: ")
             if check.lower() == 'y' or check.lower() == 'yes':
                 info['API_KEY'] = newKey
-                with open('app_info.json', 'w') as outfile:
-                    json.dump(info, outfile)
+                json.dump(info, open('app_info.json', 'w'))
                 print(bcolors.OKGREEN + "Done." + bcolors.ENDC)
             else:
                 print(bcolors.FAIL + "Action cancelled." + bcolors.ENDC)
@@ -402,6 +416,9 @@ def changeApiKey():
             clearScreen()
             printMenu()
         return
+    except KeyboardInterrupt:
+        print("\n" + bcolors.WARNING + "Exiting..." + bcolors.ENDC)
+        exit()
     except:
         print(sys.exc_info())
     return
@@ -422,7 +439,7 @@ def printHelp():
         ".\n\nPlease send feedback and any bug reports to me via Reddit private message." + \
         "\n\nIf you want to contribute to the development of this app or my other work, consider donating to " + \
         bcolors.HEADER + "AtLeastSignificant.eth" + bcolors.OKGREEN + "." + \
-        "\n\nThis app is powered by " + bcolors.WARNING + "Etherscan.io" + bcolors.OKGREEN +  " APIs." + bcolors.ENDC)
+        "\n\nThis app is powered by " + bcolors.WARNING + "Etherscan.io" + bcolors.OKGREEN +  " APIs and " + bcolors.WARNING + "Coinmarketcap.com" + bcolors.OKGREEN + "." + bcolors.ENDC)
     
     help = bcolors.HEADER + "\nCommands info:" + bcolors.ENDC + "\n\n\
     1 - " + bcolors.OKGREEN + "Check balances" + bcolors.FAIL + " :: " + bcolors.ENDC + "view current Ether and token balances on all addresses in your wallet\n\
